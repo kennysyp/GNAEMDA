@@ -31,7 +31,7 @@ def main():
     args_model = parser.parse_args()
 
 
-    # ---------------------k折交叉验证-----------------#
+    # ---------------------k-fold_valid_experiment-----------------#
     from tools import cross_valid_experiment, get_class_edge, caculate_avg
     pos_test, neg_test, pos_test_Bip, neg_test_Bip = cross_valid_experiment(adj, k, labels, num_drug, num_microbe)
 
