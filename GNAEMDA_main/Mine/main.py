@@ -30,17 +30,14 @@ def main():
     parser.add_argument('--scaling_factor', type=float, default=1.6)# 64 1.3
     args_model = parser.parse_args()
 
-
     # ---------------------k-fold_valid_experiment-----------------#
     from tools import cross_valid_experiment, get_class_edge, caculate_avg
     pos_test, neg_test, pos_test_Bip, neg_test_Bip = cross_valid_experiment(adj, k, labels, num_drug, num_microbe)
-
 
     Results_GNAEMDA = []
     Results_VGNAEMDA = []
     Results_connected=[]
     Results_isolated=[]
-
     isolated_num = []
 
     for i in range(k):
@@ -52,7 +49,7 @@ def main():
         for index in test_edge:
             train_adj[index[0]][index[1]] = 0
             train_adj[index[1]][index[0]] = 0
-        two_class_data = get_class_edge(train_adj, test_edge, test_false)
+        two_class_data = get_class_edge(train_adj, test_edge, test_false)#get isolated nodes and connected nodes
         isolated_num.append(two_class_data.isolated_node_num)
 
         print('-----GNAEMDA-----')
