@@ -102,11 +102,13 @@ def VGNAE(args_model,scaling_factor, Adjacency_Matrix_raw, Features, labels, cho
 
             if args.model == 'VGAE':
                 x_ = self.linear1(x)
-                x_ = self.propagate(x_, edge_index)  #
+                x_ = self.propagate(x_, edge_index)
                 x = self.linear2(x)
-                x = F.normalize(x, p=2, dim=1) * args.scaling_factor  # 归一化
+                r_x = torch.Tensor(x)
+                x = F.normalize(x, p=2, dim=1) * args.scaling_factor
                 x = self.propagate(x, edge_index)
-                return x, x_
+
+                return x + r_x, x_
 
             norm = torch.norm(x, p=2, dim=1)
             self.asd = norm

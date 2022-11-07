@@ -26,7 +26,7 @@ def main():
     parser.add_argument('--scale', type=int, default='0', help=" ")
     parser.add_argument('--Learning_Rate', type=float, default='5e-3', help="")
     parser.add_argument('--Hidden_Layer_1', type=int, default='3092', help="")
-    parser.add_argument('--Hidden_Layer_2', type=int, default='128', help="")#256,128
+    parser.add_argument('--Hidden_Layer_2', type=int, default='256', help="")#256,128
     parser.add_argument('--scaling_factor', type=float, default=1.6)# 64 1.3
     args_model = parser.parse_args()
 
