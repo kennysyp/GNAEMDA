@@ -12,14 +12,6 @@ from torch_geometric.data import Data
 sys.path.append('./Data_Process')
 path_result = "./Latent_representation/"
 
-def count_1(A):
-    k = 0
-    for i in range(A.shape[0]):
-        for j in range(A.shape[1]):
-            if A[i][j] == 1:
-                k = k + 1
-    return k
-
 def process_data(edge_index):
     A = np.array(edge_index)
     teams00 = list(A[0])
@@ -114,7 +106,7 @@ def VGNAE(args_model,scaling_factor, Adjacency_Matrix_raw, Features, labels, cho
             self.asd = norm
             return x
 
-    channels = args_model.Hidden_Layer_2  # 128
+    channels = args_model.Hidden_Layer_2
 
 
     data_tensor1 = np.array(data_tensor)
@@ -131,11 +123,6 @@ def VGNAE(args_model,scaling_factor, Adjacency_Matrix_raw, Features, labels, cho
 
     max_auc = 0
     max_ap = 0
-    max_fpr = 0
-    max_tpr =0
-    flag_times = 0
-    max_roc_connected = 0
-    max_roc_isolated = 0
     for epoch in range(0, epochs):
 
         loss, emb = train()
@@ -144,32 +131,16 @@ def VGNAE(args_model,scaling_factor, Adjacency_Matrix_raw, Features, labels, cho
         with torch.no_grad():
                print('------------------------------------------')
                auc, ap, fpr, tpr = test(test_edges, test_edges_false)
-               roc_connected, ap_connected, fpr2, tpr2 = test(test_connected_edge, test_connected_false)
-               roc_isolated, ap_isolated, fpr3, tpr3 = test(test_isolated_edge, test_isolated_false)
+               # roc_connected, ap_connected, fpr2, tpr2 = test(test_connected_edge, test_connected_false)
+               # roc_isolated, ap_isolated, fpr3, tpr3 = test(test_isolated_edge, test_isolated_false)
                print('Epoch: {:03d}, LOSS: {:.5f}'.format(epoch, loss))
                print('test:','AUC: {:.5f}, AP: {:.5f}'.format(auc, ap))
-               print('connected_auc:{:.5f}, connected_ap:{:.5f}'.format(roc_connected, ap_connected))
-               print('isolated_auc:{:.5f}, isolated_ap:{:.5f}'.format(roc_isolated, ap_isolated))
+               # print('connected_auc:{:.5f}, connected_ap:{:.5f}'.format(roc_connected, ap_connected))
+               # print('isolated_auc:{:.5f}, isolated_ap:{:.5f}'.format(roc_isolated, ap_isolated))
                if auc > max_auc:
-                   # if epoch > 50:
-                   #     flag_times = 0
                    max_auc = auc
                    max_ap = ap
-                   max_fpr = fpr
-                   max_tpr = tpr
-               # if roc_connected > max_roc_connected:
-                   max_roc_connected = roc_connected
-               # if roc_isolated >  max_roc_isolated:
-                   max_roc_isolated = roc_isolated
 
-               # else:
-               #     if epoch > 50:
-               #        flag_times = flag_times + 1
-               #     if flag_times > 10:
-               #        print('early stop')
-               #        break
     print('max_auc:', max_auc, 'ap:', max_ap)
-    print('connected_auc:{:.5f}'.format(max_roc_connected))
-    print('isolated_auc:{:.5f}'.format(max_roc_isolated))
-    return max_auc, max_roc_connected, max_roc_isolated
+    return max_auc
 

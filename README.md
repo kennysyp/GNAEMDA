@@ -30,5 +30,6 @@ Recent versions of the following packages for Python 3 are required:
 
 ## Run
 Default examples and parameters have been set
-lr = 0.005
-s = 1.6
+run main.py on MDAD
+GNAEMDA: epochs = 400, lr = 0.005, s = 1.6
+VGNAEMDA: epochs = 3000, lr = 0.005, s = 1.6

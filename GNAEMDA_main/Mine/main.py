@@ -26,8 +26,8 @@ def main():
     parser.add_argument('--scale', type=int, default='0', help=" ")
     parser.add_argument('--Learning_Rate', type=float, default='5e-3', help="")
     parser.add_argument('--Hidden_Layer_1', type=int, default='3092', help="")
-    parser.add_argument('--Hidden_Layer_2', type=int, default='256', help="")#256,128
-    parser.add_argument('--scaling_factor', type=float, default=1.6)# 64 1.3
+    parser.add_argument('--Hidden_Layer_2', type=int, default='256', help="")
+    parser.add_argument('--scaling_factor', type=float, default=1.6)#
     args_model = parser.parse_args()
 
     # ---------------------k-fold_valid_experiment-----------------#
@@ -36,8 +36,6 @@ def main():
 
     Results_GNAEMDA = []
     Results_VGNAEMDA = []
-    Results_connected=[]
-    Results_isolated=[]
     isolated_num = []
 
     for i in range(k):
@@ -53,24 +51,20 @@ def main():
         isolated_num.append(two_class_data.isolated_node_num)
 
         print('-----GNAEMDA-----')
-        result_GNAE, r_connected, r_isolated = VGNAE(args_model, args_model.scaling_factor, adj, Features, labels, 'GAE',  train_adj, test_edge, test_false, two_class_data, num_drug, num_microbe)
+        result_GNAE = VGNAE(args_model, args_model.scaling_factor, adj, Features, labels, 'GAE',  train_adj, test_edge, test_false, two_class_data, num_drug, num_microbe)
         Results_GNAEMDA.append(result_GNAE)
-        Results_connected.append(r_connected)
-        Results_isolated.append(r_isolated)
 
         # print('-----VGNAEMDA-----')
-        # result_VGNAE, r_connected, r_isolated = VGNAE(args_model, args_model.scaling_factor, adj, Features, labels, 'VGAE', train_adj, test_edge, test_false, two_class_data, num_drug, num_microbe)
+        # result_VGNAE = VGNAE(args_model, args_model.scaling_factor, adj, Features, labels, 'VGAE', train_adj, test_edge, test_false, two_class_data, num_drug, num_microbe)
         # Results_VGNAEMDA.append(result_VGNAE)
-        # Results_connected.append(r_connected)
-        # Results_isolated.append(r_isolated)
+
 
     print('GNAEMDA_avg:', caculate_avg(Results_GNAEMDA))
+
     # print('VGNAEMDA_avg:', caculate_avg(Results_VGNAEMDA))
-    print('connected_AUC:', caculate_avg(r_connected))
-    print('isolated_AUC:',caculate_avg(r_isolated))
-    print(isolated_num)
-    print('mean:', np.mean(np.array(isolated_num)))
-    print('std:', np.std(np.array(isolated_num)))
-    print('percent: {:.2%}'.format(np.mean(np.array(isolated_num))/(num_drug+num_microbe)))
+    # print(isolated_num)
+    # print('mean:', np.mean(np.array(isolated_num)))
+    # print('std:', np.std(np.array(isolated_num)))
+    # print('percent: {:.2%}'.format(np.mean(np.array(isolated_num))/(num_drug+num_microbe)))
 
 main()
